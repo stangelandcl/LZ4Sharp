@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace LZ4CSharp
+namespace LZ4Sharp
 {
 	public static unsafe class LZ4
 	{		

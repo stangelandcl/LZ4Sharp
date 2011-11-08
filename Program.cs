@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace LZ4CSharp
+namespace LZ4Sharp
 {
 	class Program
 	{
