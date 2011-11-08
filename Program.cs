@@ -29,7 +29,7 @@ namespace LZ4Sharp
 			long compressedTotal = 0;
 			long uncompressedTotal = 0;
 			           
-			for(int j=0;j<10;j++)
+			//for(int j=0;j<10;j++)
             foreach (var bytes in Read(args[0]))
             {                         	
                 uncompressedTotal += bytes.Length;

@@ -87,6 +87,9 @@ namespace LZ4Sharp
 
 		public static int DecompressKnownSize(byte* compressed, byte* decompressedBuffer, int decompressedSize)
 		{
+			uint[] decArray = new uint[]{0,3,2,3};
+			fixed(uint* dec = decArray)
+			{
 			// Local Variables
 			byte* ip = (byte*) compressed;
 			byte* r;
@@ -95,10 +98,7 @@ namespace LZ4Sharp
 			byte* oend = op + decompressedSize;
 			byte* cpy;
 
-			byte token;
-
-			uint* dec = stackalloc uint[4];
-			dec[0] = 0; dec[1] = 3; dec[2] = 2; dec[3] = 3;			
+			byte token;			
 			int len, length;
 
 
@@ -166,6 +166,7 @@ namespace LZ4Sharp
 			// write overflow error detected
 			_output_error:
 				return (int) (-(((byte*)ip)-compressed));
+			}
 		}
 
 		public static byte[] Decompress(byte[] compressed)
@@ -195,6 +196,9 @@ namespace LZ4Sharp
 			int compressedSize,
 			int maxDecompressedSize)
 		{
+			uint[] decArray = new uint[]{0,3,2,3};
+			fixed(uint* dec = decArray)
+			{
 			// Local Variables
 			byte* ip = (byte*) compressedBuffer;
 			byte* iend = ip + compressedSize;
@@ -204,10 +208,7 @@ namespace LZ4Sharp
 			byte* oend = op + maxDecompressedSize;
 			byte* cpy;
 
-			byte token;
-
-			uint* dec = stackalloc uint[4];
-			dec[0] = 0; dec[1] = 3; dec[2] = 2; dec[3] = 3;			
+			byte token;	
 			int len, length;
 
 
@@ -273,6 +274,7 @@ namespace LZ4Sharp
 
 			_output_error:
 				return (int) (-(((byte*)ip)-compressedBuffer));
+			}
 		}
 
 		static void memcpy(byte* dst, byte* src, long length)
