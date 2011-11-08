@@ -1,5 +1,7 @@
-﻿Port of LZ4.c by Yann Collet (http://code.google.com/p/lz4) to C#.
-See license.txt for project license and the top of LZ4.cs for the LZ4 file license.
+﻿Port of LZ4 algorithm to C# by Clayton Stangeland.
+
+Original LZ4 algorithm can be found at (http://code.google.com/p/lz4) it was created by Yann Collet.
+See license.txt for project license.
 
 Timings
 P4 = Pentium 4 2GHz 32 bit Windows XP   
