@@ -18,8 +18,8 @@ namespace LZ4Sharp
 		{
 			if(args.Length != 1)
 			{
-				Console.WriteLine("LZ4CSharp performance test");
-				Console.WriteLine("usage: LZ4CSharp directory");
+				Console.WriteLine("LZ4Sharp performance test");
+				Console.WriteLine("usage: LZ4Sharp directory");
 				Console.WriteLine("This will time compressing and decompressing all the files in 'directory' ignoring file read time");				
 				return;	
 			}
@@ -28,7 +28,8 @@ namespace LZ4Sharp
 			var dw = new Stopwatch();
 			long compressedTotal = 0;
 			long uncompressedTotal = 0;
-			           
+			  
+
 			//for(int j=0;j<10;j++)
             foreach (var bytes in Read(args[0]))
             {                         	
@@ -64,8 +65,8 @@ namespace LZ4Sharp
 		{
 			foreach(var file in Directory.GetFiles(directory))
 			{				
-//				if(!file.EndsWith("webster"))
-//					continue;
+                //if(!file.EndsWith("webster"))
+                //    continue;
 				using(var reader = new BinaryReader(File.OpenRead(file)))
 				{
 					while(reader.BaseStream.Length != reader.BaseStream.Position)
