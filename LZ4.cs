@@ -43,7 +43,8 @@ namespace LZ4Sharp
 
 		public static byte[] Compress(byte[] source)
 		{
-			byte[] dst = new byte[(int)(source.Length * 1.25 + 255)]; // guess max length.
+			int maxCompressedSize = source.Length + Math.Max(8, (int)Math.Ceiling(source.Length * 1.004));
+			byte[] dst = new byte[maxCompressedSize];
 			int length = Compress(source, dst);
 			byte[] dest = new byte[length];
 			Buffer.BlockCopy(dst, 0, dest, 0, length);
