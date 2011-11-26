@@ -1,4 +1,4 @@
-﻿# Port of LZ4 algorithm to C# by Clayton Stangeland.
+﻿# Port of Yann Collet's LZ4 algorithm to C# by Clayton Stangeland.
 
 Original LZ4 algorithm can be found at (http://code.google.com/p/lz4) it was created by Yann Collet.
 See license.txt for project license.
@@ -25,14 +25,14 @@ P4 LZ4C# whole corpus Compression 49 MB/s Decompression 181 MB/s
 
 i5 memcpy 1658 MB/s
 i5 Lz4 Compression 270 MB/s Decompression 1184 MB/s  
-i5 LZ4C# Compression 207 MB/s Decompression 758 MB/s 49%
+i5 LZ4C# Compression 207 MB/s Decompression 758 MB/s Ratio 49%
 i5 LZ4C# whole corpus Compression 267 MB/s Decompression 838 MB/s Ratio 47%
 i5 gzip whole corpus Compression 48 MB/s Decompression 266 MB/s Ratio 33%
 
 ### Conclusion:
 LZ4 C# is about 2/3 the speed of the c version. (Also, LZ4C# is slightly faster on the whole silesia corpus than on just the 'webster' file)
-LZ4 C# Compressed silesia corpus in 47% of uncompressed
-LZ4 C# Compressed 'webster' file in 49% of uncompressed
+LZ4 C# Compressed silesia corpus is 47% of uncompressed
+LZ4 C# Compressed 'webster' file is 49% of uncompressed
 
 ## Steps to recreate.
 1) Download lz4.c and lz4.h from http://code.google.com/p/lz4/source/browse/
