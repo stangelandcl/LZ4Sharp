@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 
 namespace LZ4Sharp
@@ -39,7 +40,9 @@ namespace LZ4Sharp
 		const uint RUN_MASK = ((1U<<RUN_BITS)-1);
 		
 		const uint LZ4_64KLIMIT =((1U<<16) + (MFLIMIT-1));
-		const int HASHLOG64K = (HASH_LOG+1);
+		const int HASHLOG64K = (HASH_LOG+1);	
+		static byte[] DeBruijnBytePos = new byte[32]{ 0, 0, 3, 0, 3, 1, 3, 0, 3, 2, 2, 1, 3, 2, 0, 1, 3, 3, 1, 2, 2, 2, 2, 0, 3, 1, 2, 0, 1, 0, 1, 1 };
+		
 
 		public static byte[] Compress(byte[] source)
 		{
@@ -313,6 +316,7 @@ namespace LZ4Sharp
 		{
 			var table = new byte*[HASHTABLESIZE];			
 			fixed(byte** hashTable = table)
+			fixed(byte* deBruijnBytePos = DeBruijnBytePos)
 			{
 				byte* ip = (byte*) source;
 				byte* anchor = ip;
@@ -379,13 +383,25 @@ namespace LZ4Sharp
 					// Start Counting
 					ip+=MINMATCH; r+= MINMATCH; // MinMatch verified
 					anchor = ip;
-					while (*(uint *)r == *(uint *)ip)
+//					while (*(uint *)r == *(uint *)ip)
+//					{
+//						ip+=4; r+=4;
+//						if (ip>matchlimit-4) { r -= ip - (matchlimit-3); ip = matchlimit-3; break; }
+//					}
+//					if (*(ushort *)r == *(ushort *)ip) { ip+=2; r+=2; }
+//					if (*r == *ip) ip++;
+					
+					while (ip<matchlimit-3)
 					{
-						ip+=4; r+=4;
-						if (ip>matchlimit-4) { r -= ip - (matchlimit-3); ip = matchlimit-3; break; }
+						int diff = (int)(*(uint*)(r) ^ *(uint*)(ip));
+						if (diff==0) { ip+=4; r+=4; continue; }
+						ip += deBruijnBytePos[((uint)((diff & -diff) * 0x077CB531U)) >> 27];
+						goto _endCount;
 					}
-					if (*(ushort *)r == *(ushort *)ip) { ip+=2; r+=2; }
-					if (*r == *ip) ip++;
+					if ((ip<(matchlimit-1)) && (*(ushort*)(r) == *(ushort*)(ip))) { ip+=2; r+=2; }
+					if ((ip<matchlimit) && (*r == *ip)) ip++;
+_endCount:
+					
 					len = (int)(ip - anchor);
 
 					// Encode MatchLength
@@ -427,7 +443,9 @@ namespace LZ4Sharp
 		static int Compress64K(byte* source, byte* dest, int isize)
 		{			
 			var table = new ushort[HASHTABLESIZE<<1];
-			fixed(ushort *hashTable = table){
+			fixed(ushort *hashTable = table)
+			fixed(byte* deBruijnBytePos = DeBruijnBytePos)
+			{
 
 				byte* ip = (byte*) source;
 				byte* anchor = ip;
@@ -491,11 +509,17 @@ namespace LZ4Sharp
 					// Start Counting
 					ip+=MINMATCH; r+=MINMATCH; // MinMatch verified
 					anchor = ip;
+//					while (ip<matchlimit-3)
+//					{
+//						if (*(uint *)r == *(uint *)ip) { ip+=4; r+=4; continue; }
+//						if (*(ushort *)r == *(ushort *)ip) { ip+=2; r+=2; }
+//						if (*r == *ip) ip++;
+					
 					while (ip<matchlimit-3)
 					{
-						if (*(uint *)r == *(uint *)ip) { ip+=4; r+=4; continue; }
-						if (*(ushort *)r == *(ushort *)ip) { ip+=2; r+=2; }
-						if (*r == *ip) ip++;
+						int diff = (int)(*(uint*)(r) ^ *(uint*)(ip));
+						if (diff==0) { ip+=4; r+=4; continue; }
+						ip += deBruijnBytePos[((uint)((diff & -diff) * 0x077CB531U)) >> 27];
 						goto _endCount;
 					}
 					if ((ip<(matchlimit-1)) && (*(ushort *)r == *(ushort *)ip)) { ip+=2; r+=2; }
@@ -534,6 +558,9 @@ namespace LZ4Sharp
 				return (int) (((byte*)op)-dest);
 			}
 		}
+
+	
+ 
 
 	}
 }
