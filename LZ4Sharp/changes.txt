@@ -1,0 +1,5 @@
+﻿Feb 22, 2012 
+	- Refactored to non static classes and separate classes for compressor and decompressor and 32 and 64 bit
+	- Updated code to match Feb 16 (revision 55) of lz4 source code (see http://code.google.com/p/lz4/source/list). 
+	- Ignore big-endian for now
+	- Changed back to macros and using the C preprocessor (gcc -E) as a compile step to make it easier to keep in sync with the main lz4 code.

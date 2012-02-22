@@ -4,7 +4,7 @@
     <ProjectGuid>{F234773A-FFD4-4964-AC20-7D890C29E9C2}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>LZ4Sharp</RootNamespace>
     <AssemblyName>LZ4Sharp</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -58,6 +58,9 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -73,14 +76,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ILZ4Compressor.cs" />
+    <Compile Include="ILZ4Decompressor.cs" />
     <Compile Include="LZ4.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="LZ4Compressor32.cs" />
+    <Compile Include="LZ4Compressor64.cs" />
+    <Compile Include="LZ4CompressorFactory.cs" />
+    <Compile Include="LZ4Decompressor32.cs" />
+    <Compile Include="LZ4Decompressor64.cs" />
+    <Compile Include="LZ4DecompressorFactory.cs" />
+    <Compile Include="LZ4Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="License.txt" />
     <None Include="Readme.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="changes.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <PropertyGroup>
+    <PreBuildEvent>"C:\Program Files (x86)\CodeBlocks\MinGW\bin\gcc.exe" -P -CC -x c -E "$(ProjectDir)LZ4Compressor.c" &gt; "$(ProjectDir)LZ4Compressor32.cs"
+"C:\Program Files (x86)\CodeBlocks\MinGW\bin\gcc.exe" -P -CC -x c -E "$(ProjectDir)LZ4Decompressor.c" &gt; "$(ProjectDir)LZ4Decompressor32.cs"
+"C:\Program Files (x86)\CodeBlocks\MinGW\bin\gcc.exe" -DLZ4_ARCH64=1 -P -CC -x c -E "$(ProjectDir)LZ4Compressor.c" &gt; "$(ProjectDir)LZ4Compressor64.cs"
+"C:\Program Files (x86)\CodeBlocks\MinGW\bin\gcc.exe" -DLZ4_ARCH64=1 -P -CC -x c -E "$(ProjectDir)LZ4Decompressor.c" &gt; "$(ProjectDir)LZ4Decompressor64.cs"
+</PreBuildEvent>
+  </PropertyGroup>
 </Project>
