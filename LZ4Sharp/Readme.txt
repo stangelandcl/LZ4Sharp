@@ -3,6 +3,9 @@
 Original LZ4 algorithm can be found at (http://code.google.com/p/lz4) it was created by Yann Collet.
 See license.txt for project license.
 
+## Build
+The solution file has a prebuild event that assumes CodeBlocks IDE is installed. It uses the MinGW gcc preprocessor. The path may need changed if the build doesn't work.
+
 ## Timings
 Compression times do not include disk I/O.
 
@@ -33,17 +36,3 @@ i5 gzip whole corpus Compression 48 MB/s Decompression 266 MB/s Ratio 33%
 LZ4 C# is about 2/3 the speed of the c version. (Also, LZ4C# is slightly faster on the whole silesia corpus than on just the 'webster' file)
 LZ4 C# Compressed silesia corpus is 47% of uncompressed
 LZ4 C# Compressed 'webster' file is 49% of uncompressed
-
-## Steps to recreate.
-1) Download lz4.c and lz4.h from http://code.google.com/p/lz4/source/browse/
-2) Replace #define with const
-3) Expand macros
-4) Delete extra lines at top of file
-5) Search and replace types with .NET types
-6) Create memcpy
-7) Rename functions.
-9) Remove context (ctx)
-9) Remove const on pointers
-10) Replace 'ref' (C# keyword with 'r')
-11) change array definitions
-12) add casts
