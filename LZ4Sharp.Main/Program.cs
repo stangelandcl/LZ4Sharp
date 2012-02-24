@@ -30,7 +30,7 @@ namespace LZ4Sharp.Main
 
             Console.WriteLine("Done. Press a key.");
             Console.ReadLine();
-        }
+        }       
 
         private static void Test(string directory, ILZ4Compressor compressor, ILZ4Decompressor decompressor)
         {
