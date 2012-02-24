@@ -140,7 +140,7 @@ namespace LZ4Sharp
         public byte[] Decompress(byte[] compressed)
         {
             byte[] dest = new byte[compressed.Length * 4];
-            int len = Decompress(compressed, dest, dest.Length);
+            int len = Decompress(compressed, dest, compressed.Length);
             byte[] d = new byte[len];
             Buffer.BlockCopy(dest, 0, d, 0, d.Length);
             return d;
@@ -148,7 +148,7 @@ namespace LZ4Sharp
 
         public int Decompress(byte[] compressed, byte[] decompressedBuffer)
         {
-            return Decompress(compressed, decompressedBuffer, decompressedBuffer.Length);
+            return Decompress(compressed, decompressedBuffer, compressed.Length);
         }
 
         public int Decompress(byte[] compressedBuffer, byte[] decompressedBuffer, int compressedSize)
@@ -219,8 +219,8 @@ namespace LZ4Sharp
                     // copy repeated sequence
                     if (op - r < STEPSIZE)
                     {
-#if ARCH64
-                        var dec2 = dec2table[op-ref];
+#if LZ4_ARCH64
+                        var dec2 = dec2Ptr[op-ref];
 #else
 			            const int dec2 = 0;
 #endif

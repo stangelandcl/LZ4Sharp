@@ -89,11 +89,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="License.txt" />
-    <None Include="Readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="changes.txt" />
+    <Content Include="..\changes.txt">
+      <Link>changes.txt</Link>
+    </Content>
+    <Content Include="..\License.txt">
+      <Link>License.txt</Link>
+    </Content>
+    <Content Include="..\Readme.txt">
+      <Link>Readme.txt</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <PropertyGroup>
