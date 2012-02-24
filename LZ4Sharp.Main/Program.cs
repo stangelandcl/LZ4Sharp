@@ -21,8 +21,6 @@ namespace LZ4Sharp.Main
                 return;
             }
 
-            Test();
-
             Console.WriteLine("This application is running as a " + (IntPtr.Size == 4 ? "32" : "64") + " bit process.");
             Console.WriteLine();
 
@@ -36,26 +34,7 @@ namespace LZ4Sharp.Main
 
             Console.WriteLine("Done. Press a key.");
             Console.ReadLine();
-        }
-
-        private static void Test()
-        {
-            var lz4 = new LZ4Compressor64();
-            var lz4Dec = new LZ4Decompressor64();
-            byte[] source;
-            using (var f = File.OpenRead(@"c:\users\stangecl\desktop\source.bin"))
-            {
-                source = (byte[])new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter().Deserialize(f);
-            }
-
-            var compressed = lz4.Compress(source);
-            var decompressed = lz4Dec.Decompress(compressed);
-            for (int i = 0; i < source.Length; i++)
-            {
-                if (source[i] != decompressed[i])
-                    Console.WriteLine(i + " " + source[i] + " " + decompressed[i]);
-            }
-        }
+        }       
 
         private static unsafe void TestEmpty(ILZ4Compressor compressor, ILZ4Decompressor decompressor)
         {
