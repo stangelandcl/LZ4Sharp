@@ -139,8 +139,18 @@ namespace LZ4Sharp
 
         public byte[] Decompress(byte[] compressed)
         {
-            byte[] dest = new byte[compressed.Length * 4];
-            int len = Decompress(compressed, dest, compressed.Length);
+			int length = compressed.Length;
+            int len;
+            byte[] dest;
+			const int Multiplier = 4; // Just a number. Determines how fast length should increase.
+            do
+            {
+                length *= Multiplier;
+                dest = new byte[length];
+                len = Decompress(compressed, dest, compressed.Length);
+            }
+            while (len < 0 || dest.Length < len);
+
             byte[] d = new byte[len];
             Buffer.BlockCopy(dest, 0, d, 0, d.Length);
             return d;

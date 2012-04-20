@@ -16,6 +16,8 @@ namespace LZ4Sharp.Main
                 Console.WriteLine("LZ4Sharp performance test");
                 Console.WriteLine("usage: LZ4Sharp directory");
                 Console.WriteLine("This will time compressing and decompressing all the files in 'directory' ignoring file read time");
+                Console.WriteLine("Done. Press a key.");
+                Console.ReadLine();
                 return;
             }
 
@@ -23,13 +25,22 @@ namespace LZ4Sharp.Main
             Console.WriteLine();
 
             Console.WriteLine("Test LZ4 32 bit compression");
+            TestEmpty(new LZ4Compressor32(), new LZ4Decompressor32());
             Test(args[0], new LZ4Compressor32(), new LZ4Decompressor32());
 
             Console.WriteLine("Test LZ4 64 bit compression");
+            TestEmpty(new LZ4Compressor64(), new LZ4Decompressor64());
             Test(args[0], new LZ4Compressor64(), new LZ4Decompressor64());
 
             Console.WriteLine("Done. Press a key.");
             Console.ReadLine();
+        }
+
+        private static unsafe void TestEmpty(ILZ4Compressor compressor, ILZ4Decompressor decompressor)
+        {
+            var bytes = new byte[50];
+            byte[] dst = compressor.Compress(bytes);
+            var result = decompressor.Decompress(dst);
         }       
 
         private static void Test(string directory, ILZ4Compressor compressor, ILZ4Decompressor decompressor)
