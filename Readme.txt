@@ -5,6 +5,7 @@ See license.txt for project license.
 
 ## Build
 The solution file has a prebuild event that assumes CodeBlocks IDE is installed. It uses the MinGW gcc preprocessor. The path may need changed if the build doesn't work.
+The .cs files have already been created, though, so you should be able to copy them to another project without building it yourself.
 
 ## Timings
 Compression times do not include disk I/O.
