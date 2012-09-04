@@ -61,6 +61,26 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Generate|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Generate\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <FileAlignment>4096</FileAlignment>
+    <DebugType>Full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Generate|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Generate\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <FileAlignment>4096</FileAlignment>
+    <DebugType>Full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -101,10 +121,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <PropertyGroup>
-    <PreBuildEvent>"C:\Program Files (x86)\CodeBlocks\MinGW\bin\gcc.exe" -P -CC -x c -E "$(ProjectDir)LZ4Compressor.c" &gt; "$(ProjectDir)LZ4Compressor32.cs"
-"C:\Program Files (x86)\CodeBlocks\MinGW\bin\gcc.exe" -P -CC -x c -E "$(ProjectDir)LZ4Decompressor.c" &gt; "$(ProjectDir)LZ4Decompressor32.cs"
-"C:\Program Files (x86)\CodeBlocks\MinGW\bin\gcc.exe" -DLZ4_ARCH64=1 -P -CC -x c -E "$(ProjectDir)LZ4Compressor.c" &gt; "$(ProjectDir)LZ4Compressor64.cs"
-"C:\Program Files (x86)\CodeBlocks\MinGW\bin\gcc.exe" -DLZ4_ARCH64=1 -P -CC -x c -E "$(ProjectDir)LZ4Decompressor.c" &gt; "$(ProjectDir)LZ4Decompressor64.cs"
-</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>
