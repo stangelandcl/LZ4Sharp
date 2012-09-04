@@ -40,14 +40,12 @@ Global
 		{F668BAFC-4EA6-4594-AEF0-E43798621F7A}.Release|x86.ActiveCfg = Release|x86
 		{F668BAFC-4EA6-4594-AEF0-E43798621F7A}.Release|x86.Build.0 = Release|x86
 		{8FC05695-AE66-4485-8581-4D10DFFFB790}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8FC05695-AE66-4485-8581-4D10DFFFB790}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FC05695-AE66-4485-8581-4D10DFFFB790}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{8FC05695-AE66-4485-8581-4D10DFFFB790}.Generate|Any CPU.ActiveCfg = Generate|Any CPU
 		{8FC05695-AE66-4485-8581-4D10DFFFB790}.Generate|Any CPU.Build.0 = Generate|Any CPU
 		{8FC05695-AE66-4485-8581-4D10DFFFB790}.Generate|Any CPU.Deploy.0 = Generate|Any CPU
 		{8FC05695-AE66-4485-8581-4D10DFFFB790}.Generate|x86.ActiveCfg = Generate|Any CPU
 		{8FC05695-AE66-4485-8581-4D10DFFFB790}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8FC05695-AE66-4485-8581-4D10DFFFB790}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8FC05695-AE66-4485-8581-4D10DFFFB790}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
