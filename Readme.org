@@ -1,4 +1,7 @@
-﻿* Port of Yann Collet's LZ4 algorithm to C# by Clayton Stangeland.
+﻿
+* LZ4Sharp
+
+Port of Yann Collet's LZ4 algorithm to C# by Clayton Stangeland.
 
 Original LZ4 algorithm can be found at (http://code.google.com/p/lz4) it was created by Yann Collet.
 See license.txt for project license.
