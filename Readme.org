@@ -4,9 +4,9 @@ Original LZ4 algorithm can be found at (http://code.google.com/p/lz4) it was cre
 See license.txt for project license.
 
 * Build
+ Building in Debug or Release will use the already generated C# files
 
-** Building in Debug or Release will use the already generated C# files
-** Building in the Generated configuration will only build the LZ4SharpGenerator project which has a prebuild event that uses the MinGW gcc from CodeBlocks to generate the C# files from the original C source code.
+ Building in the Generated configuration will only build the LZ4SharpGenerator project which has a prebuild event that uses the MinGW gcc from CodeBlocks to generate the C# files from the original C source code.
 
 * Timings
 
