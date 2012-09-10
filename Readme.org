@@ -16,12 +16,15 @@ Compression times do not include disk I/O.
 
 
 P4 = Pentium 4 2GHz 32 bit Windows XP   
+
 i5 = Intel i5 2.67 GHZ 64 bit Windows 7 running LZ4Sharp in 64 bit
 
 LZ4Sharp = Timings for 'webster' from silesia corpus (http://sun.aei.plsl.pl/~sdeor/index.php?page=silesia)
+
 memcpy and LZ4 = Timing for file 'webster' in silesia corpus in m2mark.exe 
 	from http://sd-1.archive-host.com/membres/up/182754578/m2mark.zip 
 	(or from link to benchmark program at http://code.google.com/p/lz4)
+
 gzip = GZip from the Intel compiler built as a dll and accessed from C# by PInvoke
 
 Ratio = compressed size / decompressed size (lower is better)
