@@ -204,27 +204,29 @@ namespace LZ4Sharp
                 {
                     // get runLength
                     token = *ip++;
-                    if ((length = (token >> LZ4Util.ML_BITS)) == LZ4Util.RUN_MASK) { for (; (len = *ip++) == 255; length += 255) { } length += len; }
+  if ((length=(token>>LZ4Util.ML_BITS)) == LZ4Util.RUN_MASK) { int s=255; while ((ip<iend) && (s==255)) { s=*ip++; length += s; } }
 
                     // copy literals
                     cpy = op + length;
-                    if (cpy > oend - LZ4Util.COPYLENGTH)
+  if ((cpy>oend-LZ4Util.COPYLENGTH) || (ip+length>iend-LZ4Util.COPYLENGTH))
                     {
-                        if (cpy > oend) goto _output_error;
+   if (cpy > oend) goto _output_error; // Error : request to write beyond destination buffer
+   if (ip+length > iend) goto _output_error; // Error : request to read beyond source buffer
                         LZ4Util.CopyMemory(op, ip, length);
                         op += length;
+   ip += length;
+   if (ip<iend) goto _output_error; // Error : LZ4 format violation
                         break; //Necessarily EOF
                     }
 
                     do { *(uint*)op = *(uint*)ip; op+=4; ip+=4;; *(uint*)op = *(uint*)ip; op+=4; ip+=4;; } while (op<cpy);; ip -= (op - cpy); op = cpy;
-                    if (ip >= iend) break; // check EOF
 
                     // get offset
                     { r = (cpy) - *(ushort*)ip; }; ip+=2;
                     if (r < decompressedBuffer) goto _output_error;
 
                     // get matchlength
-                    if ((length = (int)(token & LZ4Util.ML_MASK)) == LZ4Util.ML_MASK) { for (; (len = *ip++) == 255; length += 255) { } length += len; }
+  if ((length=(int)(token&LZ4Util.ML_MASK)) == LZ4Util.ML_MASK) { while (ip<iend) { int s = *ip++; length +=s; if (s==255) continue; break; } }
 
                     // copy repeated sequence
                     if (op - r < STEPSIZE)

@@ -89,5 +89,6 @@ namespace LZ4Sharp.Main
                 }
             }
         }
-    }
+
+   }
 }
