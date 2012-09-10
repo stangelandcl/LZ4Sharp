@@ -1,4 +1,5 @@
-﻿* LZ4Sharp
+﻿
+* LZ4Sharp
 
 Port of Yann Collet's LZ4 algorithm to C# by Clayton Stangeland.
 
