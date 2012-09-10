@@ -8,7 +8,9 @@ See license.txt for project license.
 * Build
  Building in Debug or Release will use the already generated C# files
 
- Building in the Generated configuration will only build the LZ4SharpGenerator project which has a prebuild event that uses the MinGW gcc from CodeBlocks to generate the C# files from the original C source code.
+ LZ4Compressor.c and LZ4Decompressor.c are updated by manually comparing to the original LZ4 code and fixing any C# differences from C but leaving some of the macros to make comparing easier.
+
+ Then building in the Generated configuration will only build the LZ4SharpGenerator project which has a prebuild event that uses the MinGW gcc from CodeBlocks to generate the C# files from LZ4Compressor.c and LZ4Decompressor.c. 
 
 * Timings
 
