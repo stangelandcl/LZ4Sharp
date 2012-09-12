@@ -1,4 +1,7 @@
-﻿Feb 22, 2012 
+﻿Sep 12, 2012 
+    	- Updated to revision 77 from lz4
+
+Feb 22, 2012 
 	- Refactored to non static classes and separate classes for compressor and decompressor and 32 and 64 bit
 	- Updated code to match Feb 16 (revision 55) of lz4 source code (see http://code.google.com/p/lz4/source/list). 
 	- Ignore big-endian for now
