@@ -204,18 +204,18 @@ namespace LZ4Sharp
                 {
                     // get runLength
                     token = *ip++;
-		if ((length=(token>>LZ4Util.ML_BITS)) == LZ4Util.RUN_MASK) { int s=255; while ((ip<iend) && (s==255)) { s=*ip++; length += s; } }
+					if ((length=(token>>LZ4Util.ML_BITS)) == LZ4Util.RUN_MASK) { int s=255; while ((ip<iend) && (s==255)) { s=*ip++; length += s; } }
 
                     // copy literals
                     cpy = op + length;
-		if ((cpy>oend-LZ4Util.COPYLENGTH) || (ip+length>iend-LZ4Util.COPYLENGTH))
+					if ((cpy>oend-LZ4Util.COPYLENGTH) || (ip+length>iend-LZ4Util.COPYLENGTH))
                     {
-			if (cpy > oend) goto _output_error;          // Error : request to write beyond destination buffer
-			if (ip+length > iend) goto _output_error;    // Error : request to read beyond source buffer
+						if (cpy > oend) goto _output_error;          // Error : request to write beyond destination buffer
+						if (ip+length > iend) goto _output_error;    // Error : request to read beyond source buffer
                         LZ4Util.CopyMemory(op, ip, length);
                         op += length;
-			ip += length;
-			if (ip<iend) goto _output_error;             // Error : LZ4 format violation
+						ip += length;
+						if (ip<iend) goto _output_error;             // Error : LZ4 format violation
                         break; //Necessarily EOF
                     }
 
@@ -226,7 +226,7 @@ namespace LZ4Sharp
                     if (r < decompressedBuffer) goto _output_error;
 
                     // get matchlength
-		if ((length=(int)(token&LZ4Util.ML_MASK)) == LZ4Util.ML_MASK) { while (ip<iend) { int s = *ip++; length +=s; if (s==255) continue; break; } }
+					if ((length=(int)(token&LZ4Util.ML_MASK)) == LZ4Util.ML_MASK) { while (ip<iend) { int s = *ip++; length +=s; if (s==255) continue; break; } }
 
                     // copy repeated sequence
                     if (op - r < STEPSIZE)
@@ -254,7 +254,7 @@ namespace LZ4Sharp
                         LZ4_SECURECOPY(r, op, (oend - LZ4Util.COPYLENGTH));
                         while (op < cpy) *op++ = *r++;
                         op = cpy;
-                        if (op == oend) break; // Check EOF (should never happen, since last 5 bytes are supposed to be literals)
+                        if (op == oend) goto _output_error; // Check EOF (should never happen, since last 5 bytes are supposed to be literals)
                         continue;
                     }
                     LZ4_SECURECOPY(r, op, cpy);

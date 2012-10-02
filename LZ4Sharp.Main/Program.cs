@@ -27,10 +27,12 @@ namespace LZ4Sharp.Main
             Console.WriteLine("Test LZ4 32 bit compression");
             TestEmpty(new LZ4Compressor32(), new LZ4Decompressor32());
             Test(args[0], new LZ4Compressor32(), new LZ4Decompressor32());
+            TestUnknownSize(args[0], new LZ4Compressor32(), new LZ4Decompressor32());
 
             Console.WriteLine("Test LZ4 64 bit compression");
             TestEmpty(new LZ4Compressor64(), new LZ4Decompressor64());
             Test(args[0], new LZ4Compressor64(), new LZ4Decompressor64());
+            TestUnknownSize(args[0], new LZ4Compressor64(), new LZ4Decompressor64());
 
             Console.WriteLine("Done. Press a key.");
             Console.ReadLine();
@@ -41,7 +43,19 @@ namespace LZ4Sharp.Main
             var bytes = new byte[50];
             byte[] dst = compressor.Compress(bytes);
             var result = decompressor.Decompress(dst);
-        }       
+        }
+
+        private static void TestUnknownSize(string directory, ILZ4Compressor compressor, ILZ4Decompressor decompressor)
+        {
+            foreach (var file in Directory.GetFiles(directory))
+            {
+                var bytes = File.ReadAllBytes(file);
+                var compressed = compressor.Compress(bytes);
+                var decompressed = decompressor.Decompress(compressed);
+                if (!bytes.SequenceEqual(decompressed))
+                    throw new Exception("Compressing/Decompressing " + file + " failed.");
+            }
+        }
 
         private static void Test(string directory, ILZ4Compressor compressor, ILZ4Decompressor decompressor)
         {
@@ -75,7 +89,7 @@ namespace LZ4Sharp.Main
 
             Console.WriteLine("Ratio = " + compressedTotal * 1.0 / uncompressedTotal);
             Console.WriteLine("Compression Time (MB / sec) = " + uncompressedTotal / 1024.0 / 1024.0 / w.Elapsed.TotalSeconds);
-            Console.WriteLine("Uncompression Time (MB / sec) = " + uncompressedTotal / 1024.0 / 1024.0 / dw.Elapsed.TotalSeconds);
+            Console.WriteLine("Uncompression Time (MB / sec) = " + uncompressedTotal / 1024.0 / 1024.0 / dw.Elapsed.TotalSeconds);           
         }
 
         static IEnumerable<byte[]> Read(string directory)

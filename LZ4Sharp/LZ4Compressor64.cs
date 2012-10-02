@@ -15,7 +15,7 @@ namespace LZ4Sharp
     /// <summary>
     /// Class for compressing a byte array into an LZ4 byte array.
     /// </summary>
- public unsafe class LZ4Compressor64 : ILZ4Compressor
+    public unsafe class LZ4Compressor64 : ILZ4Compressor
     {
         //**************************************
         // Tuning parameters
@@ -53,7 +53,7 @@ namespace LZ4Sharp
         const int SKIPSTRENGTH = (NOTCOMPRESSIBLE_CONFIRMATION > 2 ? NOTCOMPRESSIBLE_CONFIRMATION : 2);
         const int SIZE_OF_LONG_TIMES_TWO_SHIFT = 4;
         const int STEPSIZE = 8;
-        static byte[] DeBruijnBytePos = new byte[64]{ 0, 0, 0, 0, 0, 1, 1, 2, 0, 3, 1, 3, 1, 4, 2, 7, 0, 2, 3, 6, 1, 5, 3, 5, 1, 3, 4, 4, 2, 5, 6, 7, 7, 0, 1, 2, 3, 3, 4, 6, 2, 6, 5, 5, 3, 4, 5, 6, 7, 1, 2, 4, 6, 4, 4, 5, 7, 2, 6, 5, 7, 6, 7, 7 };
+        static byte[] DeBruijnBytePos = new byte[64] { 0, 0, 0, 0, 0, 1, 1, 2, 0, 3, 1, 3, 1, 4, 2, 7, 0, 2, 3, 6, 1, 5, 3, 5, 1, 3, 4, 4, 2, 5, 6, 7, 7, 0, 1, 2, 3, 3, 4, 6, 2, 6, 5, 5, 3, 4, 5, 6, 7, 1, 2, 4, 6, 4, 4, 5, 7, 2, 6, 5, 7, 6, 7, 7 };
         //**************************************
         // Macros
         //**************************************
@@ -84,7 +84,7 @@ namespace LZ4Sharp
         /// <returns>The maximum required size in bytes of the compressed data</returns>
         public int CalculateMaxCompressedLength(int uncompressedLength)
         {
-   return uncompressedLength + (uncompressedLength / 255) + 16;
+            return uncompressedLength + (uncompressedLength / 255) + 16;
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace LZ4Sharp
                 byte* iend = ip + isize;
                 byte* mflimit = iend - MFLIMIT;
                 byte* matchlimit = (iend - LASTLITERALS);
-    byte* oend = dest + maxOutputSize;
+                byte* oend = dest + maxOutputSize;
 
 
                 byte* op = (byte*)dest;
@@ -153,8 +153,8 @@ namespace LZ4Sharp
                 if (isize < MINLENGTH) goto _last_literals;
 
                 // First Byte
-                hashTable[(((*(uint*)ip) * 2654435761U) >> ((MINMATCH*8)-HASH_LOG))] = ip - basePtr;
-                ip++; forwardH = (((*(uint*)ip) * 2654435761U) >> ((MINMATCH*8)-HASH_LOG));
+                hashTable[(((*(uint*)ip) * 2654435761U) >> ((MINMATCH * 8) - HASH_LOG))] = ip - basePtr;
+                ip++; forwardH = (((*(uint*)ip) * 2654435761U) >> ((MINMATCH * 8) - HASH_LOG));
 
                 // Main Loop
                 for (; ; )
@@ -175,7 +175,7 @@ namespace LZ4Sharp
                         if (forwardIp > mflimit) { goto _last_literals; }
 
                         // LZ4_HASH_VALUE
-                        forwardH = (((*(uint*)forwardIp) * 2654435761U) >> ((MINMATCH*8)-HASH_LOG));
+                        forwardH = (((*(uint*)forwardIp) * 2654435761U) >> ((MINMATCH * 8) - HASH_LOG));
                         r = hashTable[h] + basePtr;
                         hashTable[h] = ip - basePtr;
 
@@ -191,7 +191,7 @@ namespace LZ4Sharp
                     else *token = (byte)(length << LZ4Util.ML_BITS);
 
                     //Copy Literals
-                    { byte* e=(op)+length; do { *(ulong*)op = *(ulong*)anchor; op+=8; anchor+=8; } while (op<e);; op=e; };
+                    { byte* e = (op) + length; do { *(ulong*)op = *(ulong*)anchor; op += 8; anchor += 8; } while (op < e);; op = e; };
 
                 _next_match:
                     // Encode Offset
@@ -208,15 +208,15 @@ namespace LZ4Sharp
                     //					if (*(ushort *)r == *(ushort *)ip) { ip+=2; r+=2; }
                     //					if (*r == *ip) ip++;
 
-                    while (ip < matchlimit - (STEPSIZE -1))
+                    while (ip < matchlimit - (STEPSIZE - 1))
                     {
                         long diff = (long)(*(long*)(r) ^ *(long*)(ip));
                         if (diff == 0) { ip += STEPSIZE; r += STEPSIZE; continue; }
-                        ip += DeBruijnBytePos[((ulong)((diff & -diff) * 0x0218A392CDABBD3F)) >> 58];;
+                        ip += DeBruijnBytePos[((ulong)((diff & -diff) * 0x0218A392CDABBD3F)) >> 58]; ;
                         goto _endCount;
                     }
 
-                    if ((ip<(matchlimit-3)) && (*(uint*)r == *(uint*)ip)) { ip+=4; r+=4; }
+                    if ((ip < (matchlimit - 3)) && (*(uint*)r == *(uint*)ip)) { ip += 4; r += 4; }
 
 
                     if ((ip < (matchlimit - 1)) && (*(ushort*)(r) == *(ushort*)(ip))) { ip += 2; r += 2; }
@@ -224,7 +224,7 @@ namespace LZ4Sharp
                 _endCount:
 
                     len = (int)(ip - anchor);
-  if (op + (1 + LASTLITERALS) + (len>>8) >= oend) return 0; // Check output limit
+                    if (op + (1 + LASTLITERALS) + (len >> 8) >= oend) return 0; // Check output limit
                     // Encode MatchLength
                     if (len >= (int)LZ4Util.ML_MASK) { *token += (byte)LZ4Util.ML_MASK; len -= (byte)LZ4Util.ML_MASK; for (; len > 509; len -= 510) { *op++ = 255; *op++ = 255; } if (len > 254) { len -= 255; *op++ = 255; } *op++ = (byte)len; }
                     else *token += (byte)len;
@@ -233,23 +233,23 @@ namespace LZ4Sharp
                     if (ip > mflimit) { anchor = ip; break; }
 
                     // Fill table
-                    hashTable[(((*(uint*)ip-2) * 2654435761U) >> ((MINMATCH*8)-HASH_LOG))] = ip - 2 - basePtr;
+                    hashTable[(((*(uint*)ip - 2) * 2654435761U) >> ((MINMATCH * 8) - HASH_LOG))] = ip - 2 - basePtr;
 
                     // Test next position
-                    r = basePtr + hashTable[(((*(uint*)ip) * 2654435761U) >> ((MINMATCH*8)-HASH_LOG))];
-                    hashTable[(((*(uint*)ip) * 2654435761U) >> ((MINMATCH*8)-HASH_LOG))] = ip - basePtr;
+                    r = basePtr + hashTable[(((*(uint*)ip) * 2654435761U) >> ((MINMATCH * 8) - HASH_LOG))];
+                    hashTable[(((*(uint*)ip) * 2654435761U) >> ((MINMATCH * 8) - HASH_LOG))] = ip - basePtr;
                     if ((r > ip - (MAX_DISTANCE + 1)) && (*(uint*)r == *(uint*)ip)) { token = op++; *token = 0; goto _next_match; }
 
                     // Prepare next loop
                     anchor = ip++;
-                    forwardH = (((*(uint*)ip) * 2654435761U) >> ((MINMATCH*8)-HASH_LOG));
+                    forwardH = (((*(uint*)ip) * 2654435761U) >> ((MINMATCH * 8) - HASH_LOG));
                 }
 
             _last_literals:
                 // Encode Last Literals
                 {
                     int lastRun = (int)(iend - anchor);
-  if (((byte*)op - dest) + lastRun + 1 + ((lastRun-15)/255) >= maxOutputSize) return 0;
+                    if (((byte*)op - dest) + lastRun + 1 + ((lastRun - 15) / 255) >= maxOutputSize) return 0;
                     if (lastRun >= (int)LZ4Util.RUN_MASK) { *op++ = (byte)(LZ4Util.RUN_MASK << LZ4Util.ML_BITS); lastRun -= (byte)LZ4Util.RUN_MASK; for (; lastRun > 254; lastRun -= 255) *op++ = 255; *op++ = (byte)lastRun; }
                     else *op++ = (byte)(lastRun << LZ4Util.ML_BITS);
                     LZ4Util.CopyMemory(op, anchor, iend - anchor);
@@ -287,7 +287,7 @@ namespace LZ4Sharp
                 byte* mflimit = iend - MFLIMIT;
                 byte* matchlimit = (iend - LASTLITERALS);
                 byte* op = (byte*)dest;
-    byte* oend = dest + maxOutputSize;
+                byte* oend = dest + maxOutputSize;
 
                 int len, length;
                 const int skipStrength = SKIPSTRENGTH;
@@ -297,7 +297,7 @@ namespace LZ4Sharp
                 if (isize < MINLENGTH) goto _last_literals;
 
                 // First Byte
-                ip++; forwardH = (((*(uint*)ip) * 2654435761U) >> ((MINMATCH*8)-(HASH_LOG+1)));
+                ip++; forwardH = (((*(uint*)ip) * 2654435761U) >> ((MINMATCH * 8) - (HASH_LOG + 1)));
 
                 // Main Loop
                 for (; ; )
@@ -317,7 +317,7 @@ namespace LZ4Sharp
 
                         if (forwardIp > mflimit) { goto _last_literals; }
 
-                        forwardH = (((*(uint*)forwardIp) * 2654435761U) >> ((MINMATCH*8)-(HASH_LOG+1)));
+                        forwardH = (((*(uint*)forwardIp) * 2654435761U) >> ((MINMATCH * 8) - (HASH_LOG + 1)));
                         r = basep + hashTable[h];
                         hashTable[h] = (ushort)(ip - basep);
 
@@ -329,12 +329,12 @@ namespace LZ4Sharp
                     // Encode Literal Length
                     length = (int)(ip - anchor);
                     token = op++;
-  if (op + length + (2 + 1 + LASTLITERALS) + (length>>8) >= oend) return 0; // Check output limit
+                    if (op + length + (2 + 1 + LASTLITERALS) + (length >> 8) >= oend) return 0; // Check output limit
                     if (length >= (int)LZ4Util.RUN_MASK) { *token = (byte)(LZ4Util.RUN_MASK << LZ4Util.ML_BITS); len = (int)(length - LZ4Util.RUN_MASK); for (; len > 254; len -= 255) *op++ = 255; *op++ = (byte)len; }
                     else *token = (byte)(length << LZ4Util.ML_BITS);
 
                     // Copy Literals
-                    { byte* e=(op)+length; do { *(ulong*)op = *(ulong*)anchor; op+=8; anchor+=8; } while (op<e);; op=e; };
+                    { byte* e = (op) + length; do { *(ulong*)op = *(ulong*)anchor; op += 8; anchor += 8; } while (op < e);; op = e; };
 
 
                 _next_match:
@@ -350,15 +350,15 @@ namespace LZ4Sharp
                     //						if (*(ushort *)r == *(ushort *)ip) { ip+=2; r+=2; }
                     //						if (*r == *ip) ip++;
 
-                    while (ip < matchlimit - (STEPSIZE-1))
+                    while (ip < matchlimit - (STEPSIZE - 1))
                     {
                         long diff = (long)(*(long*)(r) ^ *(long*)(ip));
                         if (diff == 0) { ip += STEPSIZE; r += STEPSIZE; continue; }
-                        ip += DeBruijnBytePos[((ulong)((diff & -diff) * 0x0218A392CDABBD3F)) >> 58];;
+                        ip += DeBruijnBytePos[((ulong)((diff & -diff) * 0x0218A392CDABBD3F)) >> 58]; ;
                         goto _endCount;
                     }
 
-                    if ((ip<(matchlimit-3)) && (*(uint*)r == *(uint*)ip)) { ip+=4; r+=4; }
+                    if ((ip < (matchlimit - 3)) && (*(uint*)r == *(uint*)ip)) { ip += 4; r += 4; }
 
                     if ((ip < (matchlimit - 1)) && (*(ushort*)r == *(ushort*)ip)) { ip += 2; r += 2; }
                     if ((ip < matchlimit) && (*r == *ip)) ip++;
@@ -373,22 +373,22 @@ namespace LZ4Sharp
                     if (ip > mflimit) { anchor = ip; break; }
 
                     // Fill table
-              hashTable[(((*(uint*)ip-2) * 2654435761U) >> ((MINMATCH*8)-(HASH_LOG+1)))] = (ushort)(ip - 2 - basep);
+                    hashTable[(((*(uint*)ip - 2) * 2654435761U) >> ((MINMATCH * 8) - (HASH_LOG + 1)))] = (ushort)(ip - 2 - basep);
 
                     // Test next position
-                    r = basep + hashTable[(((*(uint*)ip) * 2654435761U) >> ((MINMATCH*8)-(HASH_LOG+1)))];
-                    hashTable[(((*(uint*)ip) * 2654435761U) >> ((MINMATCH*8)-(HASH_LOG+1)))] = (ushort)(ip - basep);
+                    r = basep + hashTable[(((*(uint*)ip) * 2654435761U) >> ((MINMATCH * 8) - (HASH_LOG + 1)))];
+                    hashTable[(((*(uint*)ip) * 2654435761U) >> ((MINMATCH * 8) - (HASH_LOG + 1)))] = (ushort)(ip - basep);
                     if (*(uint*)r == *(uint*)ip) { token = op++; *token = 0; goto _next_match; }
 
                     // Prepare next loop
                     anchor = ip++;
-                    forwardH = (((*(uint*)ip) * 2654435761U) >> ((MINMATCH*8)-(HASH_LOG+1)));
+                    forwardH = (((*(uint*)ip) * 2654435761U) >> ((MINMATCH * 8) - (HASH_LOG + 1)));
                 }
 
             _last_literals:
                 {
                     int lastRun = (int)(iend - anchor);
-  if (((byte*)op - dest) + lastRun + 1 + ((lastRun)>>8) >= maxOutputSize) return 0;
+                    if (((byte*)op - dest) + lastRun + 1 + ((lastRun) >> 8) >= maxOutputSize) return 0;
                     if (lastRun >= (int)LZ4Util.RUN_MASK) { *op++ = (byte)(LZ4Util.RUN_MASK << LZ4Util.ML_BITS); lastRun -= (byte)LZ4Util.RUN_MASK; for (; lastRun > 254; lastRun -= 255) *op++ = 255; *op++ = (byte)lastRun; }
                     else *op++ = (byte)(lastRun << LZ4Util.ML_BITS);
                     LZ4Util.CopyMemory(op, anchor, iend - anchor);
