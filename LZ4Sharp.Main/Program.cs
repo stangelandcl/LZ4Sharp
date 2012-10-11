@@ -29,6 +29,14 @@ namespace LZ4Sharp.Main
             Test(args[0], new LZ4Compressor32(), new LZ4Decompressor32());
             TestUnknownSize(args[0], new LZ4Compressor32(), new LZ4Decompressor32());
 
+            /* Example
+            var compressor = LZ4CompressorFactory.CreateNew();
+            var compressed = compressor.Compress(yourBytesHere);
+            var decompressor = LZ4DecompressorFactory.CreateNew();
+            var decompressed = decompressor.Decompress(compressed);
+            // decompressed should equal yourBytesHere. If not please report a bug.
+            */
+
             Console.WriteLine("Test LZ4 64 bit compression");
             TestEmpty(new LZ4Compressor64(), new LZ4Decompressor64());
             Test(args[0], new LZ4Compressor64(), new LZ4Decompressor64());
