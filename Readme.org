@@ -1,4 +1,4 @@
-* This port is unmaintained and unlikely to be updated. I have personally switched to using Yann Collet's C code via C++/CLI. For a .NET LZ4 solution try http://lz4net.codeplex.com/ which has multiple configuration and includes LZ4HC.
+*** This port is unmaintained and unlikely to be updated. I have personally switched to using Yann Collet's C code via C++/CLI. For a .NET LZ4 solution try http://lz4net.codeplex.com/ which has multiple configuration and includes LZ4HC.
 
 
 * LZ4Sharp
